@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Idle Render Pause: free the GPU when Blender is idle.
+"""Resource Safeguard: free the GPU when Blender is idle.
 
 A countdown runs while a visible 3D viewport is in Rendered shading or an
 animation is playing. When nobody touches Blender for the chosen time, it can
@@ -8,20 +8,20 @@ switched back automatically. Works with any render engine (Octane, Cycles,
 EEVEE, ...) because it only changes SpaceView3D.shading.type and stops playback.
 
 How the pieces fit together:
-  * WM_OT_irp_input_watcher: one modal operator per window. It returns
+  * WM_OT_rsg_input_watcher: one modal operator per window. It returns
     PASS_THROUGH for every event and only records the time of real user input.
   * tick(): a bpy.app.timers callback, about once per second. It keeps one
     watcher per window, feeds the current state to core.IdleController and
     redraws the top bar.
   * core.IdleController (core.py, no bpy): the idle clock and the decision of
     when to act. It is tested with a fake clock.
-  * draw_topbar() + IRP_PT_idle_menu: the [power][timer v][pause] section on
+  * draw_topbar() + RSG_PT_idle_menu: the [power][timer v][pause] section on
     the right of the top bar and the dropdown menu with the options.
-  * IRP_AddonPreferences: the saved settings.
+  * RSG_AddonPreferences: the saved settings.
 """
 
 bl_info = {
-    "name": "Idle Render Pause",
+    "name": "Resource Safeguard",
     "author": "Matteo Fontana",
     "version": (1, 0, 0),
     "blender": (5, 3, 0),
@@ -40,8 +40,8 @@ from bpy.props import BoolProperty, EnumProperty, IntProperty
 from . import core
 
 ADDON_ID = __name__
-WATCHER_IDNAME = "wm.irp_input_watcher"
-WATCHER_IDNAMES = {WATCHER_IDNAME, "WM_OT_irp_input_watcher"}
+WATCHER_IDNAME = "wm.rsg_input_watcher"
+WATCHER_IDNAMES = {WATCHER_IDNAME, "WM_OT_rsg_input_watcher"}
 TICK_INTERVAL = 1.0
 
 TIMEOUT_ITEMS = (
@@ -129,7 +129,7 @@ def stop_animation():
             with bpy.context.temp_override(window=window, screen=screen):
                 bpy.ops.screen.animation_cancel(restore_frame=False)
         except Exception as ex:
-            print("Idle Render Pause: could not stop animation:", ex)
+            print("Resource Safeguard: could not stop animation:", ex)
         return
 
 
@@ -156,9 +156,9 @@ def redraw_topbars():
 # One per window. Every event passes through; real user input (not timers or
 # window events, not mouse moves that do not move) restarts the idle clock.
 # A token lets a newer watcher replace an older one in the same window.
-class WM_OT_irp_input_watcher(bpy.types.Operator):
+class WM_OT_rsg_input_watcher(bpy.types.Operator):
     bl_idname = WATCHER_IDNAME
-    bl_label = "Idle Render Pause Input Watcher"
+    bl_label = "Resource Safeguard Input Watcher"
     bl_options = {'INTERNAL'}
 
     def invoke(self, context, event):
@@ -225,9 +225,9 @@ def ensure_watchers():
         _State.watchers.pop(window.as_pointer(), None)
         try:
             with bpy.context.temp_override(window=window, screen=window.screen):
-                bpy.ops.wm.irp_input_watcher('INVOKE_DEFAULT')
+                bpy.ops.wm.rsg_input_watcher('INVOKE_DEFAULT')
         except Exception as ex:  # never break the timer
-            print("Idle Render Pause: could not start input watcher:", ex)
+            print("Resource Safeguard: could not start input watcher:", ex)
 
 
 # ---------------------------------------------------------------- timer
@@ -265,7 +265,7 @@ def tick():
             redraw_topbars()
         _State.last_status_text = text
     except Exception as ex:
-        print("Idle Render Pause: tick error:", ex)
+        print("Resource Safeguard: tick error:", ex)
     return TICK_INTERVAL
 
 
@@ -318,7 +318,7 @@ def _on_settings_changed(self, context):
 
 # Saved settings (Preferences > Add-ons). Kept across files and restarts once
 # the Preferences are saved.
-class IRP_AddonPreferences(bpy.types.AddonPreferences):
+class RSG_AddonPreferences(bpy.types.AddonPreferences):
     bl_idname = ADDON_ID
 
     enabled: BoolProperty(
@@ -381,9 +381,9 @@ class IRP_AddonPreferences(bpy.types.AddonPreferences):
 
 
 # The pause button in the top bar. Its docstring is the button's tooltip.
-class WM_OT_irp_toggle_timer_pause(bpy.types.Operator):
+class WM_OT_rsg_toggle_timer_pause(bpy.types.Operator):
     """Pause or continue the idle timer. While paused, nothing is paused or switched"""
-    bl_idname = "wm.irp_toggle_timer_pause"
+    bl_idname = "wm.rsg_toggle_timer_pause"
     bl_label = "Pause Idle Timer"
     bl_options = {'INTERNAL'}
 
@@ -396,8 +396,8 @@ class WM_OT_irp_toggle_timer_pause(bpy.types.Operator):
 
 # The dropdown menu opened from the timer button (idle time and options).
 # No docstring: Blender would show it as the tooltip.
-class IRP_PT_idle_menu(bpy.types.Panel):
-    bl_label = "Idle Render Pause"
+class RSG_PT_idle_menu(bpy.types.Panel):
+    bl_label = "Resource Safeguard"
     bl_space_type = 'TOPBAR'
     bl_region_type = 'HEADER'
     bl_ui_units_x = 11
@@ -453,12 +453,12 @@ def draw_topbar(self, context):
     text = timer_text(prefs)
     if text:
         timer.ui_units_x = 4.0  # fixed width: the bar does not jump while counting
-    timer.popover(panel="IRP_PT_idle_menu", text=text, icon='TIME')
+    timer.popover(panel="RSG_PT_idle_menu", text=text, icon='TIME')
 
     held = _State.timer_held
     pause = row.row(align=True)
     pause.enabled = prefs.enabled
-    pause.operator("wm.irp_toggle_timer_pause", text="",
+    pause.operator("wm.rsg_toggle_timer_pause", text="",
                    icon='PLAY' if held else 'PAUSE', depress=held)
     layout.separator()
 
@@ -482,10 +482,10 @@ def timer_text(prefs):
 
 # ---------------------------------------------------------------- register
 _classes = (
-    IRP_AddonPreferences,
-    IRP_PT_idle_menu,
-    WM_OT_irp_toggle_timer_pause,
-    WM_OT_irp_input_watcher,
+    RSG_AddonPreferences,
+    RSG_PT_idle_menu,
+    WM_OT_rsg_toggle_timer_pause,
+    WM_OT_rsg_input_watcher,
 )
 
 

@@ -1,9 +1,9 @@
-"""Build the installable extension zip: dist/idle_render_pause-<version>.zip
+"""Build the installable extension zip: dist/resource_safeguard-<version>.zip
 
 Usage (any Python 3.9+):
     python tools/build_package.py --blender "C:/Program Files/Blender Foundation/Blender 5.3/blender.exe"
 
-It copies idle_render_pause/ plus the repo LICENSE into dist/stage/, removes
+It copies resource_safeguard/ plus the repo LICENSE into dist/stage/, removes
 caches, validates the manifest and builds the zip with Blender's own
 "extension build" command. Blender runs with --factory-startup and a scratch
 user profile inside dist/, so your real Blender settings are never touched.
@@ -15,7 +15,7 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PKG = "idle_render_pause"
+PKG = "resource_safeguard"
 
 
 def main():

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Engine-agnostic idle logic for Idle Render Pause.
+"""Engine-agnostic idle logic for Resource Safeguard.
 
 This module does not import bpy, so it can be tested with a fake clock and
 fake viewport spaces. Anything with ``.shading.type`` counts as a "space".

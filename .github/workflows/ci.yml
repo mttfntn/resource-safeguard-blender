@@ -72,7 +72,7 @@ jobs:
         run: ~/blender/blender --version
 
       - name: Headless tests
-        run: ~/blender/blender -b --factory-startup --python-exit-code 1 --python tests/test_idle_render_pause.py
+        run: ~/blender/blender -b --factory-startup --python-exit-code 1 --python tests/test_resource_safeguard.py
 
       - name: Build package
         run: python3 tools/build_package.py --blender ~/blender/blender
@@ -83,7 +83,7 @@ jobs:
           export BLENDER_USER_CONFIG="$RUNNER_TEMP/profile/config"
           export BLENDER_USER_SCRIPTS="$RUNNER_TEMP/profile/scripts"
           export BLENDER_USER_EXTENSIONS="$RUNNER_TEMP/profile/extensions"
-          ~/blender/blender -b --command extension install-file --repo user_default --enable dist/idle_render_pause-*.zip
+          ~/blender/blender -b --command extension install-file --repo user_default --enable dist/resource_safeguard-*.zip
           ~/blender/blender -b --python-exit-code 1 --python tests/check_installed_package.py
 
       # Releases are published from this same job, so no artifact is stored
@@ -97,7 +97,7 @@ jobs:
         run: |
           set -euo pipefail
           TAG="${GITHUB_REF_NAME}"
-          VER=$(python3 -c "import tomllib;print(tomllib.load(open('idle_render_pause/blender_manifest.toml','rb'))['version'])")
+          VER=$(python3 -c "import tomllib;print(tomllib.load(open('resource_safeguard/blender_manifest.toml','rb'))['version'])")
           [ "$TAG" = "v$VER" ] || { echo "Tag $TAG does not match manifest version $VER"; exit 1; }
 
       - name: Publish GitHub release
@@ -109,5 +109,5 @@ jobs:
           git tag -l --format='%(contents)' "${GITHUB_REF_NAME}" > notes.md
           [ -s notes.md ] || echo "Release ${GITHUB_REF_NAME}" > notes.md
           cat notes.md
-          gh release create "${GITHUB_REF_NAME}" dist/idle_render_pause-*.zip \
-            --title "Idle Render Pause ${GITHUB_REF_NAME}" --notes-file notes.md --verify-tag
+          gh release create "${GITHUB_REF_NAME}" dist/resource_safeguard-*.zip \
+            --title "Resource Safeguard ${GITHUB_REF_NAME}" --notes-file notes.md --verify-tag

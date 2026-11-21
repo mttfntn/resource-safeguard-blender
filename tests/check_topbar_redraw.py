@@ -10,12 +10,12 @@ import bpy
 import addon_utils
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-OUT = os.environ.get("IRP_OUT", "irp_topbar.txt")
-addon_utils.enable("idle_render_pause", default_set=True)
-import idle_render_pause as irp
+OUT = os.environ.get("RSG_OUT", "rsg_topbar.txt")
+addon_utils.enable("resource_safeguard", default_set=True)
+import resource_safeguard as rsg
 
 drawn = []
-_orig = irp.core.format_seconds
+_orig = rsg.core.format_seconds
 
 
 def spy(seconds):
@@ -25,7 +25,7 @@ def spy(seconds):
 
 
 def start():
-    p = irp.get_prefs()
+    p = rsg.get_prefs()
     p.enabled = True
     p.show_timer = True
     p.timeout_preset = '30'
@@ -33,14 +33,14 @@ def start():
     for a in bpy.context.window_manager.windows[0].screen.areas:
         if a.type == 'VIEW_3D':
             a.spaces.active.shading.type = 'RENDERED'
-    irp.core.format_seconds = spy
+    rsg.core.format_seconds = spy
     bpy.app.timers.register(finish, first_interval=6.0)
 
 
 def finish():
-    irp.core.format_seconds = _orig
+    rsg.core.format_seconds = _orig
     with open(OUT, "w") as f:
-        f.write("topbar_areas=%s\n" % [a.type for a in irp._State.topbar_areas.values()])
+        f.write("topbar_areas=%s\n" % [a.type for a in rsg._State.topbar_areas.values()])
         f.write("drawn=%s\n" % drawn)
         f.write("distinct=%d\n" % len(set(drawn)))
     bpy.ops.wm.quit_blender()

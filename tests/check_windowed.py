@@ -5,10 +5,10 @@ Simulated events: real modal watcher -> pause -> resume, unregister safety.
 """
 import os, sys, bpy, addon_utils
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-OUT = os.environ.get("IRP_OUT", "irp_windowed.txt")
+OUT = os.environ.get("RSG_OUT", "rsg_windowed.txt")
 lines = []
-addon_utils.enable("idle_render_pause", default_set=True)
-import idle_render_pause as irp
+addon_utils.enable("resource_safeguard", default_set=True)
+import resource_safeguard as rsg
 
 def win():
     return bpy.context.window_manager.windows[0]
@@ -33,26 +33,26 @@ def s5():
     finish()
 
 def s4():
-    lines.append("after_return=%s status=%s" % (v3d().shading.type, irp._State.controller.status_text()))
-    addon_utils.disable("idle_render_pause", default_set=True)
+    lines.append("after_return=%s status=%s" % (v3d().shading.type, rsg._State.controller.status_text()))
+    addon_utils.disable("resource_safeguard", default_set=True)
     lines.append("disabled ops=%s" % ops())
     for i in range(5): move(400 + i)   # events after unregister must not crash
     bpy.app.timers.register(s5, first_interval=1.0)
 
 def s3():
-    lines.append("after_idle=%s status=%s acted=%s" % (v3d().shading.type, irp._State.controller.status_text(), irp._State.controller.acted))
+    lines.append("after_idle=%s status=%s acted=%s" % (v3d().shading.type, rsg._State.controller.status_text(), rsg._State.controller.acted))
     move(350)   # user comes back
     bpy.app.timers.register(s4, first_interval=0.5)
 
 def s2():
     move(310)
-    lines.append("countdown=%s" % irp._State.controller.status_text())
+    lines.append("countdown=%s" % rsg._State.controller.status_text())
     bpy.app.timers.register(s3, first_interval=3.5)
 
 def s1():
-    lines.append("ops=%s watchers=%d" % (ops(), len(irp._State.watchers)))
+    lines.append("ops=%s watchers=%d" % (ops(), len(rsg._State.watchers)))
     bpy.context.scene.render.engine = 'BLENDER_WORKBENCH'
-    p = irp.get_prefs()
+    p = rsg.get_prefs()
     p.enabled = True; p.timeout_preset = 'CUSTOM'; p.custom_seconds = 2
     v3d().shading.type = 'RENDERED'
     move(300)

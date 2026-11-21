@@ -2,4 +2,4 @@ __pycache__/
 *.pyc
 dist/
 *.zip
-tests/irp_*.txt
+tests/rsg_*.txt

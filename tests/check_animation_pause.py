@@ -3,7 +3,7 @@
 blender.exe --factory-startup --enable-event-simulate --python tests/check_animation_pause.py
 Plays the animation in a Rendered viewport and checks that, at the end of the
 timer, playback stops and the viewport goes to Solid. Optional screenshots of
-the top bar go to IRP_SHOT (a folder) when set.
+the top bar go to RSG_SHOT (a folder) when set.
 """
 import os
 import sys
@@ -12,10 +12,10 @@ import bpy
 import addon_utils
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-OUT = os.environ.get("IRP_OUT", "irp_anim.txt")
-SHOT = os.environ.get("IRP_SHOT")
-addon_utils.enable("idle_render_pause", default_set=True)
-import idle_render_pause as irp
+OUT = os.environ.get("RSG_OUT", "rsg_anim.txt")
+SHOT = os.environ.get("RSG_SHOT")
+addon_utils.enable("resource_safeguard", default_set=True)
+import resource_safeguard as rsg
 
 lines = []
 
@@ -39,7 +39,7 @@ def shoot(name):
 
 
 def start():
-    p = irp.get_prefs()
+    p = rsg.get_prefs()
     p.enabled = True
     p.show_timer = True
     p.pause_animation = True
@@ -52,13 +52,13 @@ def start():
     w = win()
     with bpy.context.temp_override(window=w, screen=w.screen):
         bpy.ops.screen.animation_play()
-    irp._State.controller.reset()
+    rsg._State.controller.reset()
     bpy.app.timers.register(during, first_interval=1.6)
 
 
 def during():
     lines.append("during: playing=%s shading=%s text=%s" % (
-        win().screen.is_animation_playing, v3d().shading.type, irp.timer_text(irp.get_prefs())))
+        win().screen.is_animation_playing, v3d().shading.type, rsg.timer_text(rsg.get_prefs())))
     shoot("tb_running.png")
     bpy.app.timers.register(after, first_interval=4.0)
 
@@ -66,18 +66,18 @@ def during():
 def after():
     lines.append("after: playing=%s shading=%s text=%s frame=%d" % (
         win().screen.is_animation_playing, v3d().shading.type,
-        irp.timer_text(irp.get_prefs()), bpy.context.scene.frame_current))
+        rsg.timer_text(rsg.get_prefs()), bpy.context.scene.frame_current))
     shoot("tb_paused.png")
     if SHOT:
         w = win()
         with bpy.context.temp_override(window=w, screen=w.screen):
-            bpy.ops.wm.call_panel(name="IRP_PT_idle_menu", keep_open=True)
+            bpy.ops.wm.call_panel(name="RSG_PT_idle_menu", keep_open=True)
     bpy.app.timers.register(menu, first_interval=1.0)
 
 
 def menu():
     shoot("tb_menu.png")
-    irp.get_prefs().enabled = False
+    rsg.get_prefs().enabled = False
     bpy.app.timers.register(off, first_interval=1.0)
 
 

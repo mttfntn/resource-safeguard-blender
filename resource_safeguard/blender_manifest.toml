@@ -1,9 +1,9 @@
 schema_version = "1.0.0"
 
 # Keep "version" equal to bl_info["version"] in __init__.py.
-id = "idle_render_pause"
+id = "resource_safeguard"
 version = "1.0.0"
-name = "Idle Render Pause"
+name = "Resource Safeguard"
 tagline = "Pause animation and switch Rendered viewports to Solid when idle"
 maintainer = "Matteo Fontana"
 type = "add-on"
