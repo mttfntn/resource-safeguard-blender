@@ -51,6 +51,7 @@ export BLENDER_USER_RESOURCES=<tmp>/p BLENDER_USER_CONFIG=<tmp>/p/config BLENDER
 - The installed extension module has no `bl_info`.
 - After unregister, `window.modal_operators` may hold a `None` entry until the next event. This is harmless.
 - The pause button click is itself input, so hold freezes at the full time. `set_hold()` captures the idle time at click time, not at the next tick.
+- CI stores no artifacts: the account-wide artifact storage quota was full (first CI run failed on upload-artifact). The release is published from the test job itself.
 - In background mode, `ensure_watchers()` must not invoke the modal operator (it would log "Invalid operator call").
 
 ## How changes were verified (wrap-up, 2026-11-21)

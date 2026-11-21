@@ -126,6 +126,9 @@ places most likely to need work are listed under *Things to know*.
 - Clicking the pause button is input, so it freezes the timer at the full time.
 - The paused state (pause button) is runtime only; all other settings are add-on
   preferences, saved with the user's Preferences.
+- CI uploads no artifacts on purpose: the GitHub account's artifact storage quota
+  was full and made the first CI run fail. The tag build publishes the release
+  from the same job. Old artifacts in other repos fill that quota.
 - Running `blender --command ...` without `--factory-startup` loads the user's
   real add-ons. Always add `--factory-startup` or a scratch profile.
 
