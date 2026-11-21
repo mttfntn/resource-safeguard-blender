@@ -1,7 +1,7 @@
 # Resource Safeguard
 
 [![Blender](https://img.shields.io/badge/Blender-5.3-orange?logo=blender&logoColor=white)](https://www.blender.org/download/)
-[![Release](https://img.shields.io/badge/release-v1.0.0-blue)](https://github.com/mttfntn/resource-safeguard-blender/releases)
+[![Release](https://img.shields.io/badge/release-v2.0.0-blue)](https://github.com/mttfntn/resource-safeguard-blender/releases)
 [![tests](https://github.com/mttfntn/resource-safeguard-blender/actions/workflows/ci.yml/badge.svg)](https://github.com/mttfntn/resource-safeguard-blender/actions/workflows/ci.yml)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-green)](LICENSE)
 [![Python](https://img.shields.io/badge/language-Python-3776AB?logo=python&logoColor=white)](resource_safeguard/)
