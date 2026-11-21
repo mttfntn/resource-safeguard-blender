@@ -1,4 +1,4 @@
-# AGENTS.md: Idle Render Pause
+# AGENTS.md: Resource Safeguard
 
 Blender 5.3 extension. A countdown runs while a visible viewport is Rendered or
 an animation plays. At the end it stops playback and/or sets Rendered → Solid.
@@ -8,28 +8,28 @@ It never restores. There is no engine API. Humans: see HANDOVER.md.
 
 ```
 B="C:/Program Files/Blender Foundation/Blender 5.3/blender.exe"
-"$B" -b --factory-startup --python-exit-code 1 --python tests/test_idle_render_pause.py   # 174 checks, must end "0 failed"
+"$B" -b --factory-startup --python-exit-code 1 --python tests/test_resource_safeguard.py   # 174 checks, must end "0 failed"
 "$B" --factory-startup --enable-event-simulate --python tests/check_windowed.py          # opens a window ~10 s
 "$B" --factory-startup --enable-event-simulate --python tests/check_animation_pause.py
 "$B" --factory-startup --enable-event-simulate --python tests/check_topbar_redraw.py
-python tools/build_package.py --blender "$B"                                              # -> dist/idle_render_pause-<ver>.zip
+python tools/build_package.py --blender "$B"                                              # -> dist/resource_safeguard-<ver>.zip
 # scratch-profile install check:
 export BLENDER_USER_RESOURCES=<tmp>/p BLENDER_USER_CONFIG=<tmp>/p/config BLENDER_USER_SCRIPTS=<tmp>/p/scripts BLENDER_USER_EXTENSIONS=<tmp>/p/extensions
-"$B" -b --command extension install-file --repo user_default --enable dist/idle_render_pause-*.zip
+"$B" -b --command extension install-file --repo user_default --enable dist/resource_safeguard-*.zip
 "$B" -b --python-exit-code 1 --python tests/check_installed_package.py
 ```
 
 ## Architecture
 
-- `idle_render_pause/core.py`: `IdleController` (no bpy).
+- `resource_safeguard/core.py`: `IdleController` (no bpy).
   - `tick(enabled, timeout, visible_spaces, render_running, switch_to_solid, hold, animation_playing, pause_animation, stop_animation)`
     returns one of the statuses OFF, RENDER_JOB, PAUSED, NO_RENDER, COUNTDOWN or IDLE.
   - Also `note_input()`, `set_hold()`, `reset()`, `forget()`.
-- `idle_render_pause/__init__.py`:
-  - `WM_OT_irp_input_watcher`: modal, one per window, PASS_THROUGH. It calls `on_input()` on real input.
+- `resource_safeguard/__init__.py`:
+  - `WM_OT_rsg_input_watcher`: modal, one per window, PASS_THROUGH. It calls `on_input()` on real input.
   - `tick()`: a `bpy.app.timers` callback every 1 s. It runs `ensure_watchers()`, then `controller.tick(...)`, then `redraw_topbars()`.
-  - `draw_topbar`: prepended to `TOPBAR_HT_upper_bar`, RIGHT region only. It draws `[prop enabled QUIT][popover IRP_PT_idle_menu text=timer_text()][op wm.irp_toggle_timer_pause]`.
-  - `IRP_AddonPreferences` holds `enabled`, `show_timer`, `pause_animation`, `switch_to_solid`, `timeout_preset`, `custom_seconds`.
+  - `draw_topbar`: prepended to `TOPBAR_HT_upper_bar`, RIGHT region only. It draws `[prop enabled QUIT][popover RSG_PT_idle_menu text=timer_text()][op wm.rsg_toggle_timer_pause]`.
+  - `RSG_AddonPreferences` holds `enabled`, `show_timer`, `pause_animation`, `switch_to_solid`, `timeout_preset`, `custom_seconds`.
   - Handlers: `load_pre` / `load_post` (forget windows and areas), `render_complete` / `render_cancel` (reset the clock).
 - Data flow: an event goes to the watcher, then `note_input` updates `last_input`. The timer then runs `controller.tick` and acts on the spaces or playback. `controller.status`/`remaining` then feed `timer_text()`, and the top bar draw shows it.
 
@@ -41,8 +41,8 @@ export BLENDER_USER_RESOURCES=<tmp>/p BLENDER_USER_CONFIG=<tmp>/p/config BLENDER
 - Keep `bl_info["version"]` == manifest `version`. CI refuses a tag that does not match the manifest.
 - Supported: Blender 5.3 only (manifest min 5.3.0, max 5.4.0). CI downloads exactly `BLENDER_VERSION` in `ci.yml`.
 - Operator and panel docstrings become tooltips. Use `#` comments for internal notes there.
-  `WM_OT_irp_toggle_timer_pause`'s docstring is intentionally the button tooltip.
-- Put new logic in `core.py` and test it with the fake clock in `tests/test_idle_render_pause.py`.
+  `WM_OT_rsg_toggle_timer_pause`'s docstring is intentionally the button tooltip.
+- Put new logic in `core.py` and test it with the fake clock in `tests/test_resource_safeguard.py`.
 
 ## Pitfalls found in this project
 
@@ -67,8 +67,12 @@ export BLENDER_USER_RESOURCES=<tmp>/p BLENDER_USER_CONFIG=<tmp>/p/config BLENDER
 2. Run the tests. Commit and push `main`. Wait for green CI.
 3. `git tag -a vX.Y.Z -m "<title>" -m "<notes>"`, then `git push origin vX.Y.Z`. CI tests, builds and publishes the release with the zip. The notes come from the tag message.
 
+## Naming
+
+- The add-on was *Idle Render Pause* (`idle_render_pause`, `wm.irp_*`, `IRP_*`) until 1.0.0. Since 2.0.0 it is **Resource Safeguard**: id and package `resource_safeguard`, operators `wm.rsg_*`, classes `RSG_*`/`WM_OT_rsg_*`, env vars `RSG_OUT`/`RSG_SHOT`. Never change the id again: installed copies would stop upgrading in place and lose their preferences.
+
 ## Git
 
 - Remote: `origin` https://github.com/mttfntn/resource-safeguard-blender.git (private, not a fork).
 - Branch: `main`. Tags: `vX.Y.Z` (annotated).
-- Ignored: `__pycache__/`, `dist/`, `*.zip`, `tests/irp_*.txt`.
+- Ignored: `__pycache__/`, `dist/`, `*.zip`, `tests/rsg_*.txt`.
