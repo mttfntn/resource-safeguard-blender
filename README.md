@@ -1,10 +1,11 @@
 # Resource Safeguard
 
-[![Blender](https://img.shields.io/badge/Blender-5.3-orange?logo=blender&logoColor=white)](https://www.blender.org/download/)
-[![Release](https://img.shields.io/badge/release-v2.0.0-blue)](https://github.com/mttfntn/resource-safeguard-blender/releases)
-[![tests](https://github.com/mttfntn/resource-safeguard-blender/actions/workflows/ci.yml/badge.svg)](https://github.com/mttfntn/resource-safeguard-blender/actions/workflows/ci.yml)
-[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-green)](LICENSE)
-[![Python](https://img.shields.io/badge/language-Python-3776AB?logo=python&logoColor=white)](resource_safeguard/)
+[![Blender](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmttfntn%2Fresource-safeguard-blender%2Fmain%2Fresource_safeguard%2Fblender_manifest.toml&query=%24.blender_version_min&label=Blender&color=E87D0D&logo=blender&logoColor=white)](https://www.blender.org/download/)
+[![Release](https://img.shields.io/github/v/release/mttfntn/resource-safeguard-blender)](https://github.com/mttfntn/resource-safeguard-blender/releases/latest)
+[![Download size](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmttfntn%2Fresource-safeguard-blender%2Fbadges%2Frelease-size.json)](https://github.com/mttfntn/resource-safeguard-blender/releases/latest)
+[![Tests](https://github.com/mttfntn/resource-safeguard-blender/actions/workflows/ci.yml/badge.svg)](https://github.com/mttfntn/resource-safeguard-blender/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/mttfntn/resource-safeguard-blender)](LICENSE)
+[![Language](https://img.shields.io/github/languages/top/mttfntn/resource-safeguard-blender)](resource_safeguard/__init__.py)
 
 A Blender 5.3 add-on that frees your GPU when you leave Blender alone. A
 viewport in **Rendered** shading or a playing animation keeps the GPU busy even

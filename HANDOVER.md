@@ -99,8 +99,10 @@ From the repo root (Windows paths shown; on Linux use `blender`):
 
 1. Bump the version in **both** `resource_safeguard/blender_manifest.toml`
    (`version`) and `resource_safeguard/__init__.py` (`bl_info["version"]`).
-2. Update the static **release badge** in `README.md` by hand (the repo is
-   private, so badges cannot read the release).
+2. The README badges are live (shields.io, GitHub): never hard-code a version
+   in them. The download-size badge reads `release-size.json` on the `badges`
+   branch, which CI force-pushes at each release: don't delete that branch.
+   Live badges only render while the repository is public.
 3. Run the tests, commit, push to `main`, wait for green CI.
 4. Create an **annotated** tag; its message becomes the release notes:
    `git tag -a v1.2.3 -m "Resource Safeguard 1.2.3" -m "- what changed"` then
