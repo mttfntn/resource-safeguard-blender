@@ -1,0 +1,18 @@
+schema_version = "1.0.0"
+
+# Keep "version" equal to bl_info["version"] in __init__.py.
+id = "idle_render_pause"
+version = "1.0.0"
+name = "Idle Render Pause"
+tagline = "Pause animation and switch Rendered viewports to Solid when idle"
+maintainer = "Matteo Fontana"
+type = "add-on"
+
+tags = ["3D View", "Render"]
+
+# Supported: Blender 5.3 only (max is exclusive).
+blender_version_min = "5.3.0"
+blender_version_max = "5.4.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+copyright = ["2026 Matteo Fontana"]
