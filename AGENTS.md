@@ -63,7 +63,7 @@ export BLENDER_USER_RESOURCES=<tmp>/p BLENDER_USER_CONFIG=<tmp>/p/config BLENDER
 
 ## Release checklist
 
-1. Bump the version in the manifest and in `bl_info`. README badges are live: never hard-code versions in them.
+1. Bump the version in the manifest and in `bl_info`. README badges are live: never hard-code versions in them. The download-size badge reads `.github/release-size.json` on `main`; after each release CI updates it with a bot commit on `main`, so pull before your next change.
 2. Run the tests. Commit and push `main`. Wait for green CI.
 3. `git tag -a vX.Y.Z -m "<title>" -m "<notes>"`, then `git push origin vX.Y.Z`. CI tests, builds and publishes the release with the zip. The notes come from the tag message.
 
