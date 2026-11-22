@@ -118,12 +118,11 @@ places most likely to need work are listed under *Things to know*.
 
 ## Things to know
 
-- Until 1.0.0 the add-on was called *Idle Render Pause* (extension id
-  `idle_render_pause`, operators `wm.irp_*`, classes `IRP_*`). 2.0.0 renamed
-  everything to Resource Safeguard (`resource_safeguard`, `wm.rsg_*`, `RSG_*`).
-  Blender treats that as a new extension: 1.0.0 users uninstall the old one
-  and set their preferences again (README → Upgrading). Do not change the id
-  again, or installed copies stop upgrading in place.
+- The working name was *Idle Render Pause* (extension id `idle_render_pause`,
+  operators `wm.irp_*`, classes `IRP_*`). It was renamed to Resource Safeguard
+  (`resource_safeguard`, `wm.rsg_*`, `RSG_*`) before the 1.0.0 release, which
+  was then published again under the new name. Do not change the id again, or
+  installed copies stop upgrading in place and lose their preferences.
 - The top bar is a global area in 5.3 (see above). `TOPBAR` never appears in
   `window.screen.areas`.
 - Extensions do not expose `bl_info` on the installed module; read the version

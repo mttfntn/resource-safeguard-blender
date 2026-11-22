@@ -2,7 +2,7 @@ schema_version = "1.0.0"
 
 # Keep "version" equal to bl_info["version"] in __init__.py.
 id = "resource_safeguard"
-version = "2.0.0"
+version = "1.0.0"
 name = "Resource Safeguard"
 tagline = "Pause animation and switch Rendered viewports to Solid when idle"
 maintainer = "Matteo Fontana"

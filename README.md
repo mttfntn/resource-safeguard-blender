@@ -68,19 +68,11 @@ Requires **Blender 5.3**.
 2. In Blender: Edit > Preferences > Get Extensions > ▾ (top right) >
    **Install from Disk...**, pick the zip. It is enabled right away.
 
-### Upgrading from Idle Render Pause 1.0.0
-
-Until version 1.0.0 this add-on was called **Idle Render Pause**. Version 2.0.0
-is the same add-on under its new name, but Blender sees it as a different
-extension, so it does not replace the old one:
-
-1. Uninstall *Idle Render Pause* first (Preferences > Get Extensions, ▾ >
-   **Uninstall**). Also remove any older copy in
-   `scripts\addons\idle_render_pause`. Only one copy should be loaded, or you
-   get two top bar sections.
-2. Install Resource Safeguard as above.
-3. Your old settings are not carried over: set the idle time and options again
-   from the timer menu.
+If you have a pre-release copy called **Idle Render Pause** (the add-on's
+working name), uninstall it first, and remove any copy in
+`scriptsddons\idle_render_pause`. Blender sees it as a different extension,
+so both would load (two top bar sections), and its settings are not carried
+over.
 
 ## Settings
 

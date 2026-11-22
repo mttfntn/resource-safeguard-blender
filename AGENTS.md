@@ -69,7 +69,7 @@ export BLENDER_USER_RESOURCES=<tmp>/p BLENDER_USER_CONFIG=<tmp>/p/config BLENDER
 
 ## Naming
 
-- The add-on was *Idle Render Pause* (`idle_render_pause`, `wm.irp_*`, `IRP_*`) until 1.0.0. Since 2.0.0 it is **Resource Safeguard**: id and package `resource_safeguard`, operators `wm.rsg_*`, classes `RSG_*`/`WM_OT_rsg_*`, env vars `RSG_OUT`/`RSG_SHOT`. Never change the id again: installed copies would stop upgrading in place and lose their preferences.
+- The working name was *Idle Render Pause* (`idle_render_pause`, `wm.irp_*`, `IRP_*`). Before the 1.0.0 release it was renamed to **Resource Safeguard**: id and package `resource_safeguard`, operators `wm.rsg_*`, classes `RSG_*`/`WM_OT_rsg_*`, env vars `RSG_OUT`/`RSG_SHOT`. Never change the id again: installed copies would stop upgrading in place and lose their preferences.
 
 ## Git
 

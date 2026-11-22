@@ -23,7 +23,7 @@ How the pieces fit together:
 bl_info = {
     "name": "Resource Safeguard",
     "author": "Matteo Fontana",
-    "version": (2, 0, 0),
+    "version": (1, 0, 0),
     "blender": (5, 3, 0),
     "location": "Top bar (right side) / Preferences > Add-ons",
     "description": "Pause animation and switch Rendered viewports to Solid after an idle time",
