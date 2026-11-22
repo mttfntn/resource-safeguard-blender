@@ -73,6 +73,7 @@ export BLENDER_USER_RESOURCES=<tmp>/p BLENDER_USER_CONFIG=<tmp>/p/config BLENDER
 
 ## Git
 
-- Remote: `origin` https://github.com/mttfntn/resource-safeguard-blender.git (private, not a fork).
+- Remote: `origin` https://github.com/mttfntn/resource-safeguard-blender.git (public, not a fork).
 - Branch: `main`. Tags: `vX.Y.Z` (annotated).
 - Ignored: `__pycache__/`, `dist/`, `*.zip`, `tests/rsg_*.txt`.
+- Community files: `.github/ISSUE_TEMPLATE/` (forms, blank issues off), `.github/pull_request_template.md`, `CONTRIBUTING.md`, `SECURITY.md` (private vulnerability reports). Keep their test command and check count in step with the suite.

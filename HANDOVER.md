@@ -13,7 +13,7 @@ The UI is one section on the right of the top bar: `[⏻ power][🕒 timer ▾][
 The timer button opens a menu with the idle time, *Show Timer*, and the two
 end-of-timer actions (*Pause Animation*, *Render → Solid*).
 
-The repository is private: https://github.com/mttfntn/resource-safeguard-blender
+The repository is public: https://github.com/mttfntn/resource-safeguard-blender
 (not a fork; there is no upstream project).
 
 ## What you need
@@ -40,6 +40,8 @@ The repository is private: https://github.com/mttfntn/resource-safeguard-blender
 | `tools/build_package.py` | Builds `dist/resource_safeguard-<version>.zip` (adds the repo LICENSE, validates, uses Blender's `extension build`). |
 | `.github/workflows/ci.yml` | CI: tests + build + install check on every push; a `vX.Y.Z` tag also publishes a release. |
 | `README.md`, `LICENSE`, `HANDOVER.md`, `AGENTS.md` | Docs. Only `LICENSE` goes into the package. |
+| `CONTRIBUTING.md`, `SECURITY.md` | How to contribute; how to report security problems privately. |
+| `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md` | Issue forms (bug report, feature request; blank issues off) and the pull-request checklist. |
 
 ## How the main feature works
 
@@ -102,7 +104,6 @@ From the repo root (Windows paths shown; on Linux use `blender`):
 2. The README badges are live (shields.io, GitHub): never hard-code a version
    in them. The download-size badge reads `release-size.json` on the `badges`
    branch, which CI force-pushes at each release: don't delete that branch.
-   Live badges only render while the repository is public.
 3. Run the tests, commit, push to `main`, wait for green CI.
 4. Create an **annotated** tag; its message becomes the release notes:
    `git tag -a v1.2.3 -m "Resource Safeguard 1.2.3" -m "- what changed"` then

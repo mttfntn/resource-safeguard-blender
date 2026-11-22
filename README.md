@@ -101,6 +101,13 @@ watchers.
 
 See [HANDOVER.md](HANDOVER.md) for the code layout, tests and releases.
 
+## Contributing
+
+Bug reports, ideas and pull requests are welcome: see
+[CONTRIBUTING.md](CONTRIBUTING.md). Open an issue with one of the
+[forms](https://github.com/mttfntn/resource-safeguard-blender/issues/new/choose); report security problems privately as described
+in [SECURITY.md](SECURITY.md).
+
 ## License
 
 GPL-3.0-or-later, see [LICENSE](LICENSE). © 2026 Matteo Fontana.

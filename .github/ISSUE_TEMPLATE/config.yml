@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: User guide
+    url: https://github.com/mttfntn/resource-safeguard-blender#top-bar
+    about: What the top bar buttons and the timer menu do, and how the countdown works.
+  - name: Report a security problem privately
+    url: https://github.com/mttfntn/resource-safeguard-blender/security/advisories/new
+    about: Please do not open a public issue for security problems.
